@@ -1,0 +1,7 @@
+<form class="ezi buy" id="ezibuy<?=$buybuttonid?>" action="https://<?=$securedomain?>/cart/" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="action" value="Add"/>
+<input type="hidden" name="buybuttonid" value="<?=$buybuttonid?>"/>
+
+<input type="submit" value="Add To Cart"/>
+
+</form>

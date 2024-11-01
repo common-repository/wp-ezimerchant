@@ -1,0 +1,3 @@
+ <dl class="identifier" style="display: inline; margin: 0; padding: 0;">
+                        <dt class="type" style="display: none;">SKU</dt>
+                        <dd class="value" style="margin: 0; padding: 0;"><?=$productcode?></dd></dl>

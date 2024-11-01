@@ -1,0 +1,70 @@
+<form class="ezi product" id="eziproduct<?=$buybuttonid?>" action="https://<?=$securedomain?>/cart/" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="action" value="Add"/>
+<input type="hidden" name="buybuttonid" value="<?=$buybuttonid?>"/>
+
+<table>
+<?php if($productcode) {?>
+<tr>
+	<td>Code</td><td>[ezicode]</td>
+</tr>
+<?php }?>
+<?php if($productname) {?>
+<tr>
+	<td>Name</td><td>[eziname]</td>
+</tr>
+<?php }?>
+<tr>
+	<td>Price</td><td>[eziprice]</td>
+</tr>
+<?php $optidx = 0; foreach($options as $option) { ?>
+<tr>
+	<td><label for="optvalue<?=$optidx?>"><?=htmlspecialchars($option->Name)?></label> <input type="hidden" name="optname<?=$optidx?>" value="<?=htmlspecialchars($option->Name)?>"/> <input type="hidden" name="opttype<?=$optidx?>" value="<?=$option->Type?>"/></td>
+	<td>
+			<? if($option->Type == "text") 
+						{
+					?>
+						<input type="text" id="optvalue<?=$optidx?>" name="optvalue<?=$optidx?>" value="<?=htmlspecialchars($option->DefaultVal)?>"/>
+					<? 
+						}
+						elseif($option->Type == "textarea") 
+						{
+					?>
+						<textarea id="optvalue<?=$optidx?>" name="optvalue<?=$optidx?>"><?=htmlspecialchars($option->DefaultVal)?></textarea>
+					<? 
+						}
+						elseif($option->Type == "select") 
+						{
+							$valuetable = $wpdb->prefix . "ezi_m_productoptionvalue";
+							$values = $wpdb->get_results($wpdb->prepare("SELECT Value, IsDefault, PriceModifier  FROM $valuetable WHERE OptionID = %d ORDER BY Sequence", $option->ID));
+					?>
+						<select id="optvalue<?=$optidx?>" name="optvalue<?=$optidx?>">
+							<? foreach($values as $value) { ?>
+							<option <?if($value->IsDefault) { echo "selected=\"selected\""; }?>><?=htmlspecialchars($value->Value)?></option>
+							<? } ?>
+						</select>
+					<? 
+						}
+						elseif($option->Type == "checkbox") 
+						{
+					?>
+						<input id="optvalue<?=$optidx?>" name="optvalue<?=$optidx?>" type="checkbox" <? if($option->DefaultVal) { ?>checked="checked"<? } ?>/>
+					<? 
+						}
+						elseif($option->Type == "file") 
+						{
+					?>
+						<input id="optvalue<?=$optidx?>" name="optvalue<?=$optidx?>" type="file" />
+					<?
+						}
+					?>			
+	</td>
+</tr>
+<? $optidx++; }?>
+<tr>
+	<td><label for="qty<?=$buybuttonid?>">Quantity</label></td><td><input id="qty<?=$buybuttonid?>" type="text" name="qty" value="1"/></td>
+</tr>
+</table>
+
+<input type="submit" value="Add to Cart"/>
+
+</form>
